@@ -1,0 +1,33 @@
+{
+  "name": "postcss-functions",
+  "version": "1.0.0",
+  "description": "PostCSS plugin for exposing JavaScript functions",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andyjansson/postcss-functions.git"
+  },
+  "keywords": [
+    "postcss",
+    "javascript",
+    "function",
+    "functions"
+  ],
+  "author": "Andy Jansson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andyjansson/postcss-functions/issues"
+  },
+  "homepage": "https://github.com/andyjansson/postcss-functions",
+  "dependencies": {
+    "glob": "^5.0.14",
+    "postcss": "^4.1.16",
+    "reduce-function-call": "^1.0.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.5"
+  }
+}
