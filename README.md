@@ -9,7 +9,7 @@
 ## Installation
 
 ```js
-pm install postcss-functions
+npm install postcss-functions
 ```
 
 ## Usage
