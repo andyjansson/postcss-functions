@@ -66,6 +66,6 @@ Loads files as functions based on one or more glob patterns. The function name w
 
 ```js
 require('postcss-functions')({
-	glob: path.join(__dirname', 'functions', '*.js')
+	glob: path.join(__dirname, 'functions', '*.js')
 });
 ```
