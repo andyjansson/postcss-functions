@@ -20,7 +20,7 @@ module.exports = postcss.plugin('postcss-functions', function (opts) {
 	});
 
 	return function (css) {
-		css.eachDecl(function (decl) {
+		css.walkDecls(function (decl) {
 			for (var func in opts.functions) {
 				if (decl.value.indexOf(func + '(') !== -1) {
 					decl.value = functionCall(decl.value, func, function (args) {
@@ -29,7 +29,7 @@ module.exports = postcss.plugin('postcss-functions', function (opts) {
 				}
 			}
 		});
-		css.eachAtRule(function (rule) {
+		css.walkAtRules(function (rule) {
 			for (var func in opts.functions) {
 				if (rule.params.indexOf(func + '(') !== -1) {
 					rule.params = functionCall(rule.params, func, function (args) {

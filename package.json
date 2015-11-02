@@ -23,8 +23,9 @@
   },
   "homepage": "https://github.com/andyjansson/postcss-functions",
   "dependencies": {
-    "glob": "^5.0.14",
-    "postcss": "^4.1.16",
+    "glob": "^5.0.15",
+    "mocha": "^2.3.3",
+    "postcss": "^5.0.10",
     "reduce-function-call": "^1.0.1"
   },
   "devDependencies": {
