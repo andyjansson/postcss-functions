@@ -47,22 +47,41 @@ Type: `Object`
 
 An object containing functions. The function name will correspond with the object key.
 
+**Example:**
+
+```js
+var color = require('css-color-converter');
+```
+
 ```js
 require('postcss-functions')({
-	functions: {
-		foo: function () {
-			return 'bar';
-		}
-	}
+    functions: {
+        darken: function (value, frac) {
+           var darken = 1 - parseFloat(frac);
+           var rgba = color(value).toRgbaArray();
+           var r = rgba[0] * darken;
+           var g = rgba[1] * darken;
+           var b = rgba[2] * darken;
+           return color([r,g,b]).toHexString();
+        }
+    }
 });
 ```
 
+```css
+.foo {
+    /* make 10% darker */
+    color: darken(blue, 0.1);
+}
+```
 
 ### `glob`
 
 Type: `string|string[]`
 
-Loads files as functions based on one or more glob patterns. The function name will correspond with the file name. 
+Loads files as functions based on one or more glob patterns. The function name will correspond with the file name.
+
+**Example:**
 
 ```js
 require('postcss-functions')({
