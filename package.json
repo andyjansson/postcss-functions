@@ -1,6 +1,6 @@
 {
   "name": "postcss-functions",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "PostCSS plugin for exposing JavaScript functions",
   "main": "index.js",
   "scripts": {
@@ -24,11 +24,10 @@
   "homepage": "https://github.com/andyjansson/postcss-functions",
   "dependencies": {
     "glob": "^5.0.15",
-    "mocha": "^2.3.3",
     "postcss": "^5.0.10",
     "reduce-function-call": "^1.0.1"
   },
   "devDependencies": {
-    "mocha": "^2.2.5"
+    "mocha": "^2.3.3"
   }
 }
