@@ -33,7 +33,7 @@ function transform(value, functions) {
 		var args = processArgs(node.nodes);
 		node.type = 'word';
 		node.value = func.apply(func, args);
-	}).toString();
+	}, true).toString();
 }
 
 module.exports = postcss.plugin('postcss-functions', function (opts) {
