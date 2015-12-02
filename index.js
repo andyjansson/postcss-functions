@@ -52,11 +52,12 @@ module.exports = postcss.plugin('postcss-functions', function (opts) {
 	});
 
 	return function (css) {
-		css.walkDecls(function (decl) {
-			decl.value = transform(decl.value, opts.functions);
-		});
-		css.walkAtRules(function (rule) {
-			rule.params = transform(rule.params, opts.functions);
+		css.walk(function (node) {
+			if (node.type === 'decl') {
+				node.value = transform(node.value, opts.functions);
+			} else if (node.type === 'atrule') {
+				node.params = transform(node.params, opts.functions);
+			}
 		});
 	};
 });
