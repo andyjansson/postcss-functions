@@ -1,11 +1,11 @@
 var postcss = require('postcss'),
 	functionCall = require('reduce-function-call'),
-	extend = require('util')._extend,
+	assign = require('object-assign'),
 	glob = require('glob'),
 	path = require('path');
 
 module.exports = postcss.plugin('postcss-functions', function (opts) {
-	opts = extend({
+	opts = assign({
 		functions: {},
 		glob: []
 	}, opts);
