@@ -1,8 +1,40 @@
 var postcss = require('postcss'),
-	functionCall = require('reduce-function-call'),
+	valueParser = require('postcss-value-parser'),
 	assign = require('object-assign'),
 	glob = require('glob'),
 	path = require('path');
+
+function processArgs(nodes) {
+	if (!nodes.length) {
+		return [];
+	}
+	var i, max, lastIndex;
+	var args = [''];
+
+	for (i = 0, max = nodes.length; i < max; i += 1) {
+		lastIndex = args.length - 1;
+		if (nodes[i].type === 'div' && nodes[i].value === ',') {
+			args[lastIndex] = args[lastIndex].trim();
+			args.push('');
+		} else {
+			args[lastIndex] += valueParser.stringify(nodes[i]);
+		}
+	}
+
+	return args;
+}
+
+function transform(value, functions) {
+	return valueParser(value).walk(function (node) {
+		if (node.type !== 'function' || !functions.hasOwnProperty(node.value)) {
+			return;
+		}
+		var func = functions[node.value];
+		var args = processArgs(node.nodes);
+		node.type = 'word';
+		node.value = func.apply(func, args);
+	}).toString();
+}
 
 module.exports = postcss.plugin('postcss-functions', function (opts) {
 	opts = assign({
@@ -21,22 +53,10 @@ module.exports = postcss.plugin('postcss-functions', function (opts) {
 
 	return function (css) {
 		css.walkDecls(function (decl) {
-			for (var func in opts.functions) {
-				if (decl.value.indexOf(func + '(') !== -1) {
-					decl.value = functionCall(decl.value, func, function (args) {
-						return opts.functions[func].apply(opts.functions[func], postcss.list.comma(args));
-					});
-				}
-			}
+			decl.value = transform(decl.value, opts.functions);
 		});
 		css.walkAtRules(function (rule) {
-			for (var func in opts.functions) {
-				if (rule.params.indexOf(func + '(') !== -1) {
-					rule.params = functionCall(rule.params, func, function (args) {
-						return opts.functions[func].apply(opts.functions[func], postcss.list.comma(args));
-					});
-				}
-			}
+			rule.params = transform(rule.params, opts.functions);
 		});
 	};
 });
