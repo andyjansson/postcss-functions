@@ -56,4 +56,25 @@ describe('postcss-functions', function () {
 			}
 		});
 	});
+	it('should invoke nested functions', function () {
+		test('a{foo:bar(baz())}', 'a{foo:parpaz}', {
+			functions: {
+				'bar': function (arg) {
+					return 'par' + arg;
+				},
+				'baz': function () {
+					return 'paz';
+				}
+			}
+		})
+	});
+	it('should not pass empty arguments', function () {
+		postcss(functions({
+			functions: {
+				'bar': function () {
+					assert.equal(arguments.length, 0);
+				}
+			}
+		})).process('a{foo:bar()}').css;
+	})
 });
