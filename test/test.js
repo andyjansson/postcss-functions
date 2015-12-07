@@ -3,14 +3,15 @@ var assert = require('assert'),
 	functions = require('../'),
 	path = require('path');
 
-var test = function (input, output, opts) {
-	var result = postcss(functions(opts)).process(input).css;
-	assert.equal(output, result);
+function test(input, output, opts) {
+	return postcss(functions(opts)).process(input).then(function (result) {
+		assert.equal(output, result.css);
+	});
 };
 
 describe('postcss-functions', function () {
 	it('will invoke a recognized function', function () {
-		test('a{foo:bar()}','a{foo:baz}', { 
+		return test('a{foo:bar()}', 'a{foo:baz}', { 
 			functions: {
 				'bar': function () {
 					return 'baz';
@@ -19,7 +20,7 @@ describe('postcss-functions', function () {
 		});
 	});
 	it('will invoke multiple recognized functions', function () {
-		test('a{foo:bar() baz()}','a{foo:bat qux}', { 
+		return test('a{foo:bar() baz()}', 'a{foo:bat qux}', { 
 			functions: {
 				'bar': function () {
 					return 'bat';
@@ -28,13 +29,13 @@ describe('postcss-functions', function () {
 					return 'qux';
 				}
 			}
-		});		
+		});
 	});
 	it('will ignore unrecognized functions', function () {
-		test('a{foo:bar()}','a{foo:bar()}', {});
+		return test('a{foo:bar()}', 'a{foo:bar()}', {});
 	});
 	it('can pass arguments', function () {
-		test('a{foo:bar(qux, norf)}', 'a{foo:qux-norf}', {
+		return test('a{foo:bar(qux, norf)}', 'a{foo:qux-norf}', {
 			functions: {
 				'bar': function (baz, bat) {
 					return baz + '-' + bat;
@@ -43,12 +44,12 @@ describe('postcss-functions', function () {
 		});
 	});
 	it('will invoke an auto-detected function from a globbed directory', function () {
-		test('a{foo:bar()}','a{foo:baz}', { 
+		return test('a{foo:bar()}', 'a{foo:baz}', { 
 			glob: path.join(__dirname, 'functions', '*.js')
 		});
 	});
 	it('can invoke a function in an @-rule', function () {
-		test('@foo bar(){bat:qux}','@foo baz{bat:qux}', { 
+		return test('@foo bar(){bat:qux}', '@foo baz{bat:qux}', { 
 			functions: {
 				'bar': function () {
 					return 'baz';
@@ -57,7 +58,7 @@ describe('postcss-functions', function () {
 		});
 	});
 	it('should invoke nested functions', function () {
-		test('a{foo:bar(baz())}', 'a{foo:parpaz}', {
+		return test('a{foo:bar(baz())}', 'a{foo:parpaz}', {
 			functions: {
 				'bar': function (arg) {
 					return 'par' + arg;
@@ -69,12 +70,12 @@ describe('postcss-functions', function () {
 		})
 	});
 	it('should not pass empty arguments', function () {
-		postcss(functions({
+		return postcss(functions({
 			functions: {
 				'bar': function () {
 					assert.equal(arguments.length, 0);
 				}
 			}
-		})).process('a{foo:bar()}').css;
+		})).process('a{foo:bar()}');
 	})
 });
