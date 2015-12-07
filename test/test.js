@@ -68,4 +68,13 @@ describe('postcss-functions', function () {
 			}
 		})
 	});
+	it('should not pass empty arguments', function () {
+		postcss(functions({
+			functions: {
+				'bar': function () {
+					assert.equal(arguments.length, 0);
+				}
+			}
+		})).process('a{foo:bar()}').css;
+	})
 });

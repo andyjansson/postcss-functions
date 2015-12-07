@@ -5,20 +5,16 @@ var postcss = require('postcss'),
 	path = require('path');
 
 function processArgs(nodes) {
-	if (!nodes.length) {
-		return [];
-	}
-	var i, max, lastIndex;
-	var args = [''];
-
-	for (i = 0, max = nodes.length; i < max; i += 1) {
-		lastIndex = args.length - 1;
-		if (nodes[i].type === 'div' && nodes[i].value === ',') {
-			args[lastIndex] = args[lastIndex].trim();
-			args.push('');
-		} else {
-			args[lastIndex] += valueParser.stringify(nodes[i]);
+	var args = [];
+	var last = nodes.reduce(function (prev, node) {
+		if (node.type === 'div' && node.value === ',') {
+			args.push(prev);
+			return '';
 		}
+		return prev + valueParser.stringify(node);
+	}, '');
+	if (last) {
+		args.push(last);
 	}
 
 	return args;
