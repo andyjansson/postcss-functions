@@ -25,10 +25,12 @@ var options = {
 
 var css = fs.readFileSync('input.css', 'utf8');
 
-var output = postcss()
+postcss()
   .use(functions(options))
   .process(css)
-  .css;
+  .then(function (result) {
+    var output = result.css;
+  });
 ```
 
 **Example** of a function call:
