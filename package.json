@@ -3,6 +3,9 @@
   "version": "2.0.0",
   "description": "PostCSS plugin for exposing JavaScript functions",
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "test": "mocha"
   },
@@ -12,11 +15,17 @@
   },
   "keywords": [
     "postcss",
+    "css",
+    "postcss-plugin",
+    "js",
     "javascript",
     "function",
     "functions"
   ],
   "author": "Andy Jansson",
+  "contributors": [
+    "Bogdan Chadkin <trysound@yandex.ru>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/andyjansson/postcss-functions/issues"
