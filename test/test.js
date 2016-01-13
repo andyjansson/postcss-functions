@@ -19,6 +19,15 @@ describe('postcss-functions', function () {
 			}
 		});
 	});
+	it('will accept deferred functions', function () {
+		return test('a{foo:bar()}', 'a{foo:baz}', {
+			functions: {
+				'bar': function () {
+					return Promise.resolve('baz');
+				}
+			}
+		});
+	});
 	it('will invoke multiple recognized functions', function () {
 		return test('a{foo:bar() baz()}', 'a{foo:bat qux}', { 
 			functions: {
