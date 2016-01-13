@@ -12,6 +12,7 @@
   },
   "keywords": [
     "postcss",
+	"postcss-plugin",
     "javascript",
     "function",
     "functions"
