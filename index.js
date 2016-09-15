@@ -4,8 +4,22 @@ var postcss = require('postcss'),
 	glob = require('glob'),
 	path = require('path');
 
+function isPromise (obj) {
+	// See: https://github.com/ssnau/xkit/blob/master/util/is-promise.js
+	return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+}
+
+function then(promiseOrResult, onFulfilled) {
+	if (isPromise(promiseOrResult)) {
+		return promiseOrResult.then(onFulfilled);
+	}
+	return onFulfilled(promiseOrResult);
+}
+
 function processArgs(nodes, functions) {
 	var args = [];
+	var argsContainPromise = false;
+
 	var last = nodes.reduce(function (prev, node) {
 		if (node.type === 'div' && node.value === ',') {
 			args.push(prev);
@@ -14,24 +28,29 @@ function processArgs(nodes, functions) {
 		if (node.type !== 'function' || !functions.hasOwnProperty(node.value)) {
 			return prev + valueParser.stringify(node);
 		}
-		return transformFunction(node, functions)
-			.then(function (result) {
-				return prev + result;
-			});
+		var resultOrPromise = transformFunction(node, functions);
+		argsContainPromise = argsContainPromise || isPromise(resultOrPromise);
+		return then(resultOrPromise, function (result) {
+			return prev + result;
+		});
 	}, '');
 	if (last) {
 		args.push(last);
 	}
 
-	return Promise.all(args);
+	if (argsContainPromise) {
+		args = Promise.all(args);
+	}
+
+	return args;
 }
 
 function transformFunction(node, functions) {
-	return processArgs(node.nodes, functions)
-		.then(function (args) {
-			var func = functions[node.value];
-			return Promise.resolve(func.apply(func, args));
-		});
+	var argsOrPromise = processArgs(node.nodes, functions);
+	return then(argsOrPromise, function (args) {
+		var func = functions[node.value];
+		return func.apply(func, args);
+	});
 }
 
 function transform(value, functions) {
@@ -41,18 +60,20 @@ function transform(value, functions) {
 		if (node.type !== 'function' || !functions.hasOwnProperty(node.value)) {
 			return;
 		}
-		var promise = transformFunction(node, functions)
-			.then(function (result) {
-				node.type = 'word';
-				node.value = result;
-			});
-		promises.push(promise);
+		var resultOrPromise = transformFunction(node, functions);
+		resultOrPromise = then(resultOrPromise, function (result) {
+			node.type = 'word';
+			node.value = result;
+		});
+		if (isPromise(resultOrPromise)) {
+			promises.push(resultOrPromise);
+		}
 	}, true);
 
-	return Promise.all(promises)
-		.then(function () {
-			return values.toString();
-		})
+	var maybePromises = promises.length ? Promise.all(promises) : null;
+	return then(maybePromises, function () {
+		return values.toString();
+	});
 }
 
 module.exports = postcss.plugin('postcss-functions', function (opts) {
@@ -75,15 +96,21 @@ module.exports = postcss.plugin('postcss-functions', function (opts) {
 
 		css.walk(function (node) {
 			if (node.type === 'decl') {
-				promises.push(transform(node.value, opts.functions)
-					.then(function (result) {
-						node.value = result;
-					}));
+				var resultOrPromise = transform(node.value, opts.functions);
+				resultOrPromise = then(resultOrPromise, function (result) {
+					node.value = result;
+				});
+				if (isPromise(resultOrPromise)) {
+					promises.push(resultOrPromise);
+				}
 			} else if (node.type === 'atrule') {
-				promises.push(transform(node.params, opts.functions)
-					.then(function (result) {
-						node.params = result;
-					}));
+				var resultOrPromise = transform(node.params, opts.functions);
+				resultOrPromise = then(resultOrPromise, function (result) {
+					node.params = result;
+				});
+				if (isPromise(resultOrPromise)) {
+					promises.push(resultOrPromise);
+				}
 			}
 		});
 
