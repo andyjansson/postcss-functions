@@ -1,6 +1,6 @@
 var assert = require('assert'),
 	postcss = require('postcss'),
-	functions = require('../'),
+	functions = require('../src'),
 	path = require('path');
 
 function test(input, output, opts) {
@@ -79,6 +79,15 @@ describe('postcss-functions', function () {
 		})
 	});
 	it('should not pass empty arguments', function () {
+		return postcss(functions({
+			functions: {
+				'bar': function () {
+					assert.equal(arguments.length, 0);
+				}
+			}
+		})).process('a{foo:bar()}');
+	})
+	it('should avoid creating promises if possible', function () {
 		return postcss(functions({
 			functions: {
 				'bar': function () {
