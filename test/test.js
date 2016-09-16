@@ -1,6 +1,8 @@
 var assert = require('assert'),
 	postcss = require('postcss'),
 	functions = require('../src'),
+	isPromise = require('../src/promiseHelpers').isPromise,
+	transformValue = require('../src/transform').transformValue,
 	path = require('path');
 
 function test(input, output, opts) {
@@ -88,12 +90,20 @@ describe('postcss-functions', function () {
 		})).process('a{foo:bar()}');
 	})
 	it('should avoid creating promises if possible', function () {
-		return postcss(functions({
-			functions: {
-				'bar': function () {
-					assert.equal(arguments.length, 0);
-				}
+		var functions = {
+			'fooPromise': function () {
+				return Promise.resolve('foo');
+			},
+			'barNoPromise': function () {
+				return 'bar';
 			}
-		})).process('a{foo:bar()}');
+		};
+
+		// With promise
+		assert(isPromise(transformValue('fooPromise()', functions)));
+		assert(isPromise(transformValue('barNoPromise(fooPromise())', functions)));
+
+		// Without promise
+		assert(!isPromise(transformValue('barNoPromise()', functions)));
 	})
 });
