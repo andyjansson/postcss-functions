@@ -1,3 +1,10 @@
+# 3.0.0 - Unreleased
+* Rewrite in ES6.
+* Add Babel.
+* Replace Mocha with AVA.
+* Update dependencies.
+* Add ability to use functions in selectors.
+
 # 2.1.1 - 2016-10-08
 * Only apply promises if function is asynchronous. Fixes out-of-memory issues.
 
