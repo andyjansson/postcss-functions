@@ -80,6 +80,20 @@ test(
 );
 
 test(
+    'should be able to pass arguments with spaces to functions',
+    testFixture, 
+    'a{foo:bar(hello world)}', 
+    'a{foo:hello-world}', 
+    {
+        functions: {
+            'bar': function (baz) {
+                return baz.replace(' ', '-');
+            }
+        }
+    }
+);
+
+test(
     'should invoke an auto-detected function from a globbed directory',
     testFixture, 
     'a{foo:bar()}', 

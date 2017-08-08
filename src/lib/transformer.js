@@ -37,12 +37,22 @@ export default functions => {
     }
 
     function extractArguments(nodes) {
-        const args = nodes.filter(node => node.type !== 'div').map(node => {
+        return Promise.all(nodes.map(node => {
             return node.type === 'function' ? transform(node) : node; 
-        });
+        })).then(values => {
+            const args = [];
+            const last = values.reduce((prev, node) => {
+                if (node.type === 'div' && node.value === ',') {
+                    args.push(prev);
+                    return '';
+                }
+                return prev + valueParser.stringify(node);
+            }, '');
 
-        return Promise.all(args).then(values => {
-            return values.map(value => valueParser.stringify(value));
+            if (last)
+                args.push(last);
+
+            return args;
         });
     }
 
