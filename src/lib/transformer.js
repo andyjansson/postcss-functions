@@ -1,45 +1,47 @@
 import valueParser from 'postcss-value-parser';
 
+import {hasPromises,then} from './helpers';
+
 export default functions => {
 
-    function transformValue(value) {
-        const promises = [];
+    function transformValue(node, prop) {
+        let promises = [];
 
-        const values = valueParser(value).walk(node => {
-            promises.push(transform(node));
+        const values = valueParser(node[prop]).walk(part => {
+            promises.push(transform(part));
         });
 
-        return Promise.all(promises).then(() => {
-            return values.toString();  
+        if (hasPromises(promises))
+            promises = Promise.all(promises);
+
+        return then(promises, () => {
+            node[prop] = values.toString();  
         });
     }
 
     function transform(node) {
         if (node.type !== 'function' || !functions.hasOwnProperty(node.value))
-            return;
+            return node;
 
         const func = functions[node.value];
-        return extractArguments(node.nodes).then(args => {
+        return then(extractArguments(node.nodes), args => {
             const invocation = func.apply(func, args);
 
-            const replaceValue = val => {
+            return then(invocation, val => {
                 node.type = 'word';
                 node.value = val;
-
                 return node;
-            };
-
-            if (invocation instanceof Promise)
-                return invocation.then(replaceValue);
-            else 
-                return replaceValue(invocation);
+            });
         });
     }
 
     function extractArguments(nodes) {
-        return Promise.all(nodes.map(node => {
-            return node.type === 'function' ? transform(node) : node; 
-        })).then(values => {
+        nodes = nodes.map(node => transform(node));
+
+        if (hasPromises(nodes))
+            nodes = Promise.all(nodes);
+
+        return then(nodes, values => {
             const args = [];
             const last = values.reduce((prev, node) => {
                 if (node.type === 'div' && node.value === ',') {
@@ -59,17 +61,11 @@ export default functions => {
     return node => {
         switch (node.type) {
             case 'decl':
-                return transformValue(node.value).then(value => {
-                    node.value = value;
-                });
+                return transformValue(node, 'value');
             case 'atrule':
-                return transformValue(node.params).then(value => {
-                    node.params = value;
-                });
+                return transformValue(node, 'params');
             case 'rule':
-                return transformValue(node.selector).then(value => {
-                    node.selector = value;
-                });
+                return transformValue(node, 'selector');
         }
     };
 };

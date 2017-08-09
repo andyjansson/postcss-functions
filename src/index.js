@@ -4,6 +4,7 @@ import glob from 'glob';
 import {plugin} from 'postcss';
 
 import transformer from './lib/transformer';
+import {hasPromises} from './lib/helpers'
 
 export default plugin('postcss-functions', (opts = {}) => {
 	const functions = opts.functions || {};
@@ -26,6 +27,8 @@ export default plugin('postcss-functions', (opts = {}) => {
 		css.walk(node => {
 			promises.push(transform(node));
 		});
-		return Promise.all(promises);
+		
+		if (hasPromises(promises))
+			return Promise.all(promises);
 	};
 });

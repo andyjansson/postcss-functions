@@ -142,7 +142,7 @@ test(
                 return 'bat' + arg;
             },
             'baz': function () {
-                return 'qux';
+                return Promise.resolve('qux');
             }
         }
     }
