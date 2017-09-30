@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "prepublish": "npm run build && del-cli dist/__tests__",
+    "postinstall": "postinstall-build dist --script prepublish",
     "build": "del-cli dist && cross-env BABEL_ENV=publish babel src --out-dir dist",
     "pretest": "eslint src && npm run build",
     "test": "nyc ava src/__tests__/"
@@ -34,7 +35,8 @@
     "glob": "^7.1.2",
     "object-assign": "^4.1.1",
     "postcss": "^6.0.9",
-    "postcss-value-parser": "^3.3.0"
+    "postcss-value-parser": "^3.3.0",
+    "postinstall-build": "^5.0.1"
   },
   "devDependencies": {
     "ava": "^0.21.0",
