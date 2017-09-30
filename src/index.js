@@ -8,6 +8,7 @@ import {hasPromises} from './lib/helpers'
 
 export default plugin('postcss-functions', (opts = {}) => {
 	const functions = opts.functions || {};
+	const walk = opts.walk || ((css,cb) => css.walk(cb));
 	let globs = opts.glob || [];
 
 	if (!Array.isArray(globs))
@@ -24,7 +25,7 @@ export default plugin('postcss-functions', (opts = {}) => {
 
 	return css => {
 		const promises = [];
-		css.walk(node => {
+		walk(css, node => {
 			promises.push(transform(node));
 		});
 		

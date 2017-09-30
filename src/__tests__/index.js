@@ -149,6 +149,21 @@ test(
 );
 
 test(
+    'should use custom walk function',
+    testFixture,
+    'a{background:foo(); border: foo();} .foo(){}',
+    'a{background:bar; border: foo();} .foo(){}',
+    {
+        functions: {
+            foo: () => 'bar'
+        },
+        walk: function (css, cb) {
+            css.walkDecls(/background/,cb);
+        }
+    }
+);
+
+test(
     'should not pass empty arguments', 
     t => {
 		return postcss(functions({
