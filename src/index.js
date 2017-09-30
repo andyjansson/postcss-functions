@@ -4,10 +4,11 @@ import glob from 'glob';
 import {plugin} from 'postcss';
 
 import transformer from './lib/transformer';
-import {hasPromises} from './lib/helpers'
+import {hasPromises, index} from './lib/helpers'
 
 export default plugin('postcss-functions', (opts = {}) => {
 	const functions = opts.functions || {};
+	const withNode = index(opts.withNode || []);
 	let globs = opts.glob || [];
 
 	if (!Array.isArray(globs))
@@ -20,7 +21,7 @@ export default plugin('postcss-functions', (opts = {}) => {
 		});
 	});
 
-	const transform = transformer(functions);
+	const transform = transformer(functions, withNode);
 
 	return css => {
 		const promises = [];

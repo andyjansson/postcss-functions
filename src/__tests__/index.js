@@ -149,6 +149,32 @@ test(
 );
 
 test(
+    'should provide CSS node to listed functions',
+    t => {
+        return postcss(functions({
+            functions: {
+                decl: function (node, value) {
+                    t.is(value, 'a');
+                    t.is(node.type, 'decl');
+                },
+                rule: function (node, value) {
+                    t.is(value, 'a');
+                    t.is(node.type, 'decl');
+                },
+                at: function (node, value) {
+                    t.is(value, 'a');
+                    t.is(node.type, 'atrule');
+                },
+                nonode: function (value) {
+                    t.is(value, 'a');
+                }
+            },
+            withNode: ['decl','rule','at']
+        })).process('a{foo:decl(a); bar:nonode(a);} .rule(a){} @at(a){}');
+    }
+);
+
+test(
     'should not pass empty arguments', 
     t => {
 		return postcss(functions({

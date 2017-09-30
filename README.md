@@ -90,3 +90,24 @@ require('postcss-functions')({
 	glob: path.join(__dirname, 'functions', '*.js')
 });
 ```
+### `withNode`
+
+Type: `string[]`
+
+A list of function names for which you'd like the CSS node to be provided as the first argument
+
+**Example:**
+
+```js
+require('postcss-functions')({
+  functions: {
+    willGetTheNode: function(node, otherArg) {
+      // Will receive the node as first argument
+    },
+    wontGetTheNode: function(arg) {
+      // Won't receive it
+    }
+  },
+  withNode: ['willGetTheNode']
+});
+```

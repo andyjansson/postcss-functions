@@ -12,3 +12,10 @@ export function then (promiseOrResult, onFulfilled) {
     
 	return onFulfilled(promiseOrResult);
 }
+
+export function index(arr) {
+	return arr.reduce((index, el) => {
+		index[el] = true;
+		return index;
+	}, {});
+}

@@ -2,13 +2,13 @@ import valueParser from 'postcss-value-parser';
 
 import {hasPromises,then} from './helpers';
 
-export default functions => {
+export default (functions, withNode) => {
 
     function transformValue(node, prop) {
         let promises = [];
 
         const values = valueParser(node[prop]).walk(part => {
-            promises.push(transform(part));
+            promises.push(transform(part, withNode, node));
         });
 
         if (hasPromises(promises))
@@ -19,12 +19,15 @@ export default functions => {
         });
     }
 
-    function transform(node) {
+    function transform(node, withNode, cssNode) {
         if (node.type !== 'function' || !functions.hasOwnProperty(node.value))
             return node;
 
         const func = functions[node.value];
-        return then(extractArguments(node.nodes), args => {
+        return then(extractArguments(node.nodes, withNode, cssNode), args => {
+            if (withNode[node.value]) {
+                args = [cssNode,...args]
+            }
             const invocation = func.apply(func, args);
 
             return then(invocation, val => {
@@ -35,8 +38,8 @@ export default functions => {
         });
     }
 
-    function extractArguments(nodes) {
-        nodes = nodes.map(node => transform(node));
+    function extractArguments(nodes, withNode, cssNode) {
+        nodes = nodes.map(node => transform(node, withNode, cssNode));
 
         if (hasPromises(nodes))
             nodes = Promise.all(nodes);
