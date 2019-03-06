@@ -64,7 +64,8 @@ require('postcss-functions')({
            var r = rgba[0] * darken;
            var g = rgba[1] * darken;
            var b = rgba[2] * darken;
-           return color([r,g,b]).toHexString();
+	   var a = rgba[3];
+           return color([r,g,b,a]).toHexString();
         }
     }
 });
