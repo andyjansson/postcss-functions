@@ -33,27 +33,30 @@
   "dependencies": {
     "glob": "^7.1.2",
     "object-assign": "^4.1.1",
-    "postcss": "^6.0.9",
-    "postcss-value-parser": "^3.3.0"
+    "postcss": "^7.0.17",
+    "postcss-value-parser": "^4.0.1"
   },
   "devDependencies": {
-    "ava": "^0.21.0",
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.25.0",
-    "babel-eslint": "^7.2.3",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-env": "^1.6.0",
-    "babel-register": "^6.24.1",
+    "ava": "^2.2.0",
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^6.24.1",
+    "babel-eslint": "^10.0.2",
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "babel-plugin-istanbul": "^5.2.0",
     "cross-env": "^5.0.5",
-    "del-cli": "^1.1.0",
-    "eslint": "^4.4.1",
-    "eslint-config-i-am-meticulous": "^6.0.1",
-    "eslint-plugin-babel": "^4.1.2",
+    "del-cli": "^2.0.0",
+    "eslint": "^6.1.0",
+    "eslint-config-i-am-meticulous": "^11.0.0",
+    "eslint-plugin-babel": "^5.3.0",
     "eslint-plugin-import": "^2.7.0",
-    "nyc": "^11.1.0"
+    "nyc": "^14.1.1"
   },
   "ava": {
-    "require": "babel-register"
+    "compileEnhancements": false,
+    "require": "@babel/register"
   },
   "eslintConfig": {
     "parser": "babel-eslint",

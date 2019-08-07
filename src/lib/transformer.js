@@ -15,12 +15,12 @@ export default functions => {
             promises = Promise.all(promises);
 
         return then(promises, () => {
-            node[prop] = values.toString();  
+            node[prop] = values.toString();
         });
     }
 
     function transform(node) {
-        if (node.type !== 'function' || !functions.hasOwnProperty(node.value))
+        if (node.type !== 'function' || !Object.prototype.hasOwnProperty.call(functions, node.value))
             return node;
 
         const func = functions[node.value];
