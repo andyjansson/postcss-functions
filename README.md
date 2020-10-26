@@ -90,3 +90,7 @@ require('postcss-functions')({
 	glob: path.join(__dirname, 'functions', '*.js')
 });
 ```
+
+## Alternative
+
+- [postcss-functions-lite](https://github.com/gorriecoe/postcss-functions-lite).  This is a lite alternative ready for postcss 8 and doesn't include globing or have promises built in.
