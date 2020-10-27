@@ -1,12 +1,11 @@
 import path from 'path';
 
 import glob from 'glob';
-import {plugin} from 'postcss';
 
 import transformer from './lib/transformer';
 import {hasPromises} from './lib/helpers'
 
-export default plugin('postcss-functions', (opts = {}) => {
+function plugin(opts = {}) {
 	const functions = opts.functions || {};
 	let globs = opts.glob || [];
 
@@ -22,13 +21,20 @@ export default plugin('postcss-functions', (opts = {}) => {
 
 	const transform = transformer(functions);
 
-	return css => {
-		const promises = [];
-		css.walk(node => {
-			promises.push(transform(node));
-		});
-		
-		if (hasPromises(promises))
-			return Promise.all(promises);
-	};
-});
+	return {
+		postcssPlugin: 'postcss-functions',
+		Once (css) {
+			const promises = [];
+			css.walk(node => {
+				promises.push(transform(node));
+			});
+
+			if (hasPromises(promises))
+				return Promise.all(promises);
+		}
+	}
+}
+
+plugin.postcss = true;
+
+export default plugin;
