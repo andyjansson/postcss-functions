@@ -1,10 +1,8 @@
-# postcss-functions [![Build Status][ci-img]][ci]
+# postcss-functions
 
 [PostCSS] plugin for exposing JavaScript functions.
 
 [PostCSS]: https://github.com/postcss/postcss
-[ci-img]:  https://travis-ci.org/andyjansson/postcss-functions.svg
-[ci]:      https://travis-ci.org/andyjansson/postcss-functions
 
 ## Installation
 
