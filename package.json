@@ -31,34 +31,32 @@
   },
   "homepage": "https://github.com/andyjansson/postcss-functions",
   "dependencies": {
-    "glob": "^7.1.2",
-    "object-assign": "^4.1.1",
-    "postcss-value-parser": "^4.0.1"
+    "glob": "^7.0.0",
+    "postcss-value-parser": "^4.0.0"
   },
   "peerDependencies": {
-    "postcss": "^8.1.4"
+    "postcss": "^8.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
-    "@babel/node": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/register": "^7.5.5",
-    "ava": "^2.2.0",
-    "babel-eslint": "^10.0.2",
-    "babel-plugin-add-module-exports": "^1.0.2",
-    "babel-plugin-istanbul": "^5.2.0",
-    "cross-env": "^5.0.5",
-    "del-cli": "^2.0.0",
-    "eslint": "^6.1.0",
-    "eslint-config-i-am-meticulous": "^11.0.0",
-    "eslint-plugin-babel": "^5.3.0",
-    "eslint-plugin-import": "^2.7.0",
-    "nyc": "^14.1.1",
-    "postcss": "^8.1.4"
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/register": "^7.11.5",
+    "ava": "^3.13.0",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-add-module-exports": "^1.0.4",
+    "babel-plugin-istanbul": "^6.0.0",
+    "cross-env": "^7.0.2",
+    "del-cli": "^3.0.1",
+    "eslint": "^7.10.0",
+    "eslint-config-i-am-meticulous": "^12.0.0",
+    "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-import": "^2.22.1",
+    "nyc": "^15.1.0",
+    "postcss": "^8.0.0"
   },
   "ava": {
-    "compileEnhancements": false,
     "require": "@babel/register"
   },
   "eslintConfig": {
