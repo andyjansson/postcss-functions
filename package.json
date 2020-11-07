@@ -2,7 +2,7 @@
   "name": "postcss-functions",
   "version": "4.0.0",
   "description": "PostCSS plugin for exposing JavaScript functions",
-  "main": "lib/index.js",
+  "main": "dest/index.js",
   "files": [
     "dist",
     "LICENSE"
