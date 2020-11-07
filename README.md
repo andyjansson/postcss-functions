@@ -35,7 +35,7 @@ postcss()
 
 ```css
 body {
-	prop: foobar();
+  prop: foobar();
 }
 ```
 
@@ -73,8 +73,8 @@ postcssFunctions({
 
 ```css
 .foo {
-    /* make 10% darker */
-    color: darken(blue, 0.1);
+  /* make 10% darker */
+  color: darken(blue, 0.1);
 }
 ```
 
