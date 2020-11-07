@@ -4,5 +4,5 @@ node_modules/
 
 babel.config.json
 src/
-lib/__tests__/
+dest/__tests__/
 .github/
