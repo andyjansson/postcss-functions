@@ -1,15 +1,14 @@
 import test         from 'ava';
 import postcss      from 'postcss';
 
-import functions    from '..'
+import functions    from '../index.mjs'
 
-function testFixture(t, fixture, expected = null, opts = {}) {
+async function testFixture(t, fixture, expected = null, opts = {}) {
     if (expected === null)
         expected = fixture
 
-    return postcss(functions(opts)).process(fixture, { from: undefined }).then(out => {
-        t.deepEqual(out.css, expected);
-    });
+    const out = await postcss(functions(opts)).process(fixture, { from: undefined });
+    t.deepEqual(out.css, expected);
 }
 
 test(

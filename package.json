@@ -2,16 +2,16 @@
   "name": "postcss-functions",
   "version": "4.0.0",
   "description": "PostCSS plugin for exposing JavaScript functions",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "files": [
     "dist",
     "LICENSE"
   ],
   "scripts": {
-    "prepublish": "npm run build && del-cli dist/__tests__",
-    "build": "del-cli dist && cross-env BABEL_ENV=publish babel src --out-dir dist",
-    "pretest": "eslint src && npm run build",
-    "test": "nyc ava src/__tests__/index.js"
+    "prepublish": "npm run build",
+    "build": "babel src -d lib",
+    "pretest": "eslint --ext .mjs src",
+    "test": "ava src/__tests__/index.mjs"
   },
   "repository": {
     "type": "git",
@@ -39,27 +39,13 @@
   "devDependencies": {
     "@babel/cli": "^7.11.6",
     "@babel/core": "^7.11.6",
-    "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.11.5",
-    "@babel/register": "^7.11.5",
     "ava": "^3.13.0",
-    "babel-eslint": "^10.1.0",
-    "babel-plugin-add-module-exports": "^1.0.4",
-    "babel-plugin-istanbul": "^6.0.0",
-    "cross-env": "^7.0.2",
-    "del-cli": "^3.0.1",
     "eslint": "^7.10.0",
     "eslint-config-i-am-meticulous": "^12.0.0",
-    "eslint-plugin-babel": "^5.3.1",
-    "eslint-plugin-import": "^2.22.1",
-    "nyc": "^15.1.0",
     "postcss": "^8.0.0"
   },
-  "ava": {
-    "require": "@babel/register"
-  },
   "eslintConfig": {
-    "parser": "babel-eslint",
     "extends": "eslint-config-i-am-meticulous"
   }
 }
