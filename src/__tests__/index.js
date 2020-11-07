@@ -1,5 +1,3 @@
-import path         from 'path';
-
 import test         from 'ava';
 import postcss      from 'postcss';
 
@@ -90,16 +88,6 @@ test(
                 return baz.replace(' ', '-');
             }
         }
-    }
-);
-
-test(
-    'should invoke an auto-detected function from a globbed directory',
-    testFixture,
-    'a{foo:bar()}',
-    'a{foo:baz}',
-    {
-        glob: path.join(__dirname, 'fixtures', '*.js')
     }
 );
 

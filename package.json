@@ -31,7 +31,6 @@
   },
   "homepage": "https://github.com/andyjansson/postcss-functions",
   "dependencies": {
-    "glob": "^7.0.0",
     "postcss-value-parser": "^4.0.0"
   },
   "peerDependencies": {

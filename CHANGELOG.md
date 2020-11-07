@@ -1,5 +1,6 @@
 # 4.0.0 - Unreleased
 * Update to PostCSS 8.
+* Remove `glob` option. 
 
 # 3.0.0 - 2017-08-13
 * Rewrite in ES6.
