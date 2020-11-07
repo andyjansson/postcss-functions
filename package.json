@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "prepublish": "npm run build",
-    "build": "babel src -d lib",
+    "build": "babel src -d dest",
     "pretest": "eslint --ext .mjs src",
     "test": "ava src/__tests__/index.mjs"
   },
