@@ -3,10 +3,6 @@
   "version": "4.0.0",
   "description": "PostCSS plugin for exposing JavaScript functions",
   "main": "dest/index.js",
-  "files": [
-    "dist",
-    "LICENSE"
-  ],
   "scripts": {
     "prepublish": "npm run build",
     "build": "babel src -d dest",
