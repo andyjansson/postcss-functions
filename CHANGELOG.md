@@ -1,4 +1,4 @@
-# 4.0.0 - Unreleased
+# 4.0.0 - 2020-11-08
 * Update to PostCSS 8.
 * Remove `glob` option. 
 
