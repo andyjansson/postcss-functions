@@ -1,6 +1,6 @@
 {
   "name": "postcss-functions",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "PostCSS plugin for exposing JavaScript functions",
   "main": "dest/index.js",
   "scripts": {
